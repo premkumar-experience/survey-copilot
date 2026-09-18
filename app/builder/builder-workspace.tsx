@@ -30,12 +30,12 @@ export function BuilderWorkspace({
 } = {}) {
   return (
     <SurveyProvider initialSurvey={initialSurvey}>
-      <BuilderInner />
+      <BuilderInner isExisting={Boolean(initialSurvey)} />
     </SurveyProvider>
   )
 }
 
-function BuilderInner() {
+function BuilderInner({ isExisting }: { isExisting: boolean }) {
   const { survey, replaceSurvey } = useSurvey()
   const [pendingObjective, setPendingObjective] = useState<string | null>(null)
   const [manualObjective, setManualObjective] = useState<string | null>(null)
@@ -64,10 +64,15 @@ function BuilderInner() {
   // effect rather than a lazy initial state: sessionStorage does not exist
   // during server rendering, so reading it during render would mismatch
   // between the server and client passes.
+  //
+  // Skipped entirely when opening a saved survey: the handoff is for the
+  // "new survey" path only, and consuming it here would generate a fresh
+  // survey over the one the user just asked to open.
   useEffect(() => {
+    if (isExisting) return
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPendingObjective(takePendingObjective())
-  }, [])
+  }, [isExisting])
 
   const hasQuestions = survey.sections.some(s => s.questions.length > 0)
   const objectiveToRun = pendingObjective ?? manualObjective

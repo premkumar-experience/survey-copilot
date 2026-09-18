@@ -144,8 +144,14 @@ export const CopilotPanel = forwardRef<CopilotPanelHandle, CopilotPanelProps>(
     }
 
     // Pick up an objective handed off from the dashboard, exactly once.
+    //
+    // Never generate over a survey that already has questions: generation
+    // calls resetSurvey(), which would discard the user's work. A survey
+    // opened from storage arrives with questions already, so this is the
+    // backstop that keeps "open a saved survey" from rebuilding it.
     useEffect(() => {
-      if (pendingObjective && !startedRef.current) {
+      const hasQuestions = survey.sections.some(s => s.questions.length > 0)
+      if (pendingObjective && !startedRef.current && !hasQuestions) {
         startedRef.current = true
         void runGenerate(pendingObjective)
       }

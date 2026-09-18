@@ -17,7 +17,17 @@ export const PENDING_OBJECTIVE_KEY = 'survey-copilot:pending-objective'
  * the second invocation would find the sessionStorage key already removed
  * by the first and silently return null, dropping the handed-off objective.
  */
-let lastConsumed: { key: string; value: string } | null = null
+let lastConsumed: { value: string; at: number } | null = null
+
+/**
+ * How long the echo above stays valid.
+ *
+ * Strict Mode's remount happens within a tick; anything later is a genuinely
+ * new visit to the builder. Without this window the echo would replay the
+ * same objective for the rest of the session, so opening a saved survey
+ * would regenerate it from a stale brief.
+ */
+const ECHO_WINDOW_MS = 1000
 
 /** Reads and clears the pending objective, so a refresh does not re-generate. */
 export function takePendingObjective(): string | null {
@@ -25,14 +35,16 @@ export function takePendingObjective(): string | null {
     const value = sessionStorage.getItem(PENDING_OBJECTIVE_KEY)
     if (value) {
       sessionStorage.removeItem(PENDING_OBJECTIVE_KEY)
-      lastConsumed = { key: PENDING_OBJECTIVE_KEY, value }
+      lastConsumed = { value, at: Date.now() }
       return value
     }
-    // Nothing in storage — hand back the value this tab just consumed, in
-    // case this is Strict Mode's second invocation of the same effect.
-    if (lastConsumed?.key === PENDING_OBJECTIVE_KEY) {
+    // Nothing in storage — hand back the value this tab just consumed, but
+    // only if that happened moments ago, i.e. this is Strict Mode's second
+    // invocation of the same effect rather than a later page visit.
+    if (lastConsumed && Date.now() - lastConsumed.at < ECHO_WINDOW_MS) {
       return lastConsumed.value
     }
+    lastConsumed = null
     return null
   } catch {
     return null

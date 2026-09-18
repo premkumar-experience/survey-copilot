@@ -12,6 +12,7 @@ import Link from 'next/link'
 
 import { Wordmark } from '@/components/brand'
 import { ProviderBadge } from '@/components/provider-badge'
+import { SignOutButton } from '@/components/sign-out-button'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -64,7 +65,8 @@ export function AppSidebar({
         })}
       </nav>
 
-      <div className="mt-auto">
+      <div className="mt-auto flex flex-col gap-2">
+        <SignOutButton />
         <ProviderBadge className="px-1" />
       </div>
     </aside>
