@@ -8,11 +8,9 @@
  */
 
 import { LogOut } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export function SignOutButton() {
-  const router = useRouter()
   const [enabled, setEnabled] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -40,8 +38,10 @@ export function SignOutButton() {
       onClick={async () => {
         setBusy(true)
         await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
-        router.replace('/login')
-        router.refresh()
+        // A full document replace, not router.replace: the client tree still
+        // holds the signed-in survey state, and only a fresh document drops
+        // it. `replace` also keeps the back button from returning here.
+        window.location.replace('/login')
       }}
       className="text-muted-foreground hover:bg-sidebar-accent/50 hover:text-foreground flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors disabled:opacity-50"
     >

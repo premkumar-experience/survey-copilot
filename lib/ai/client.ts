@@ -6,6 +6,7 @@
  * answered — beyond a `provider` field used for the status badge.
  */
 
+import { handleSignedOut } from '@/lib/auth/signed-out'
 import type {
   AIProviderName,
   GenerateEmailsResult,
@@ -42,6 +43,12 @@ async function post<T>(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
+
+    // The session expired while this tab was open — leave for the login page
+    // rather than reporting a failure the user cannot act on here.
+    if (handleSignedOut(response.status)) {
+      return { ok: false, message: 'Your session has expired.' }
+    }
 
     const json = (await response.json()) as
       | { ok: true; data: T; provider: AIProviderName; fellBack?: boolean }

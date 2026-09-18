@@ -9,6 +9,7 @@
  * success arm carries an AI-specific `provider` field.
  */
 
+import { handleSignedOut } from '@/lib/auth/signed-out'
 import type { Survey, SurveySummary } from '@/types/survey'
 
 export type StoreResult<T> =
@@ -22,6 +23,13 @@ async function request<T>(
 ): Promise<StoreResult<T>> {
   try {
     const response = await fetch(url, init)
+
+    // The session expired while this tab was open — leave for the login page
+    // rather than reporting a failure the user cannot act on here.
+    if (handleSignedOut(response.status)) {
+      return { ok: false, message: 'Your session has expired.' }
+    }
+
     const json = (await response.json()) as
       { ok: true; data: T } | { ok: false; error?: { message?: string } }
 
