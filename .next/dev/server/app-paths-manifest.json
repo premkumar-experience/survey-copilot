@@ -1,0 +1,8 @@
+{
+  "/api/ai/[operation]/route": "app/api/ai/[operation]/route.js",
+  "/api/ai/status/route": "app/api/ai/status/route.js",
+  "/api/surveys/route": "app/api/surveys/route.js",
+  "/builder/[id]/page": "app/builder/[id]/page.js",
+  "/page": "app/page.js",
+  "/surveys/page": "app/surveys/page.js"
+}
