@@ -23,12 +23,19 @@ import {
 /**
  * Paths reachable without a session.
  *
- * `/login` and the auth endpoints only — deliberately nothing else. Anything
- * absent from this list is gated, so a route added later is protected by
- * default rather than accidentally public.
+ * Deliberately short. Anything absent from this list is gated, so a route
+ * added later is protected by default rather than accidentally public.
+ *
+ * `/s/` is the respondent link: a published survey has to open for people
+ * who will never have an account. It is the one hole in this gate, so the
+ * route itself does the narrowing — `app/s/[id]/page.tsx` serves a survey
+ * only when its status is `published`, and 404s identically for "no such
+ * survey" and "not published". Drafts stay invisible; what a published
+ * survey's id protects is only the questions the author chose to share.
  */
 const PUBLIC_PATHS = [
   '/login',
+  '/s',
   '/api/auth/login',
   '/api/auth/logout',
   '/api/auth/status'

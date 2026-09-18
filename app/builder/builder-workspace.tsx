@@ -137,6 +137,11 @@ function BuilderInner({ isExisting }: { isExisting: boolean }) {
             <PublishStep
               onGoToStep={setStep}
               onPreview={() => setPreviewOpen(true)}
+              /* Deferred a tick: autosave tracks the current survey in a
+                 ref written by an effect, so flushing synchronously after
+                 the publish dispatch would save the pre-publish draft and
+                 leave the shared link 404ing. */
+              onPublished={() => setTimeout(autosave.saveNow, 0)}
             />
           ) : hasQuestions ? (
             <SurveyCanvas />

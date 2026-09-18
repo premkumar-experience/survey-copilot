@@ -28,11 +28,18 @@ import { SURVEY_EMAIL_LABELS } from '@/types/survey'
 
 export function PublishStep({
   onGoToStep,
-  onPreview
+  onPreview,
+  onPublished
 }: {
   onGoToStep: (step: BuilderStep) => void
   /** Opens the workspace's PreviewDialog — shared, not a second instance. */
   onPreview: () => void
+  /**
+   * Flushes the pending autosave. Publishing has to reach storage before the
+   * shared link is opened — the respondent page reads the *saved* survey, so
+   * waiting for the 1.5s debounce would 404 for a few seconds.
+   */
+  onPublished: () => void
 }) {
   const { survey, review } = useSurvey()
 
@@ -68,7 +75,7 @@ export function PublishStep({
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">
           {published
-            ? 'This is a prototype publish state — no real respondents receive it.'
+            ? 'Live at a shareable link.'
             : 'A final check over your questions and emails before this goes out.'}
         </p>
       </header>
@@ -135,12 +142,12 @@ export function PublishStep({
       <div className="border-border mt-1 flex items-center justify-between gap-3 rounded-xl border p-4">
         <div className="min-w-0">
           <p className="text-[14px] font-medium">
-            {published ? 'Published (prototype)' : 'Publish this survey'}
+            {published ? 'Published' : 'Publish this survey'}
           </p>
           <p className="text-muted-foreground mt-0.5 text-xs">
             {blockers.length
               ? 'Resolve the item above first.'
-              : 'Sets the survey live and generates a preview link.'}
+              : 'Sets the survey live at a link anyone can open.'}
           </p>
         </div>
         {blockers.length ? (
@@ -149,7 +156,7 @@ export function PublishStep({
             Publish
           </Button>
         ) : (
-          <PublishDialog />
+          <PublishDialog onPublished={onPublished} />
         )}
       </div>
     </div>
