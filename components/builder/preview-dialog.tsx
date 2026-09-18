@@ -32,8 +32,8 @@ export function PreviewDialog({
   const TypeIcon = current ? QUESTION_TYPE_ICONS[current.type] : null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
-      <div className="bg-card relative flex max-h-[85vh] w-full max-w-lg flex-col rounded-2xl border shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 sm:p-6">
+      <div className="bg-card relative flex max-h-[92vh] w-full max-w-lg flex-col rounded-2xl border shadow-2xl sm:max-h-[85vh]">
         <button
           type="button"
           onClick={onClose}
@@ -43,7 +43,7 @@ export function PreviewDialog({
           <X className="size-4" />
         </button>
 
-        <div className="border-b px-6 py-4">
+        <div className="border-b px-4 py-4 sm:px-6">
           {/* pr-8 keeps the subtitle clear of the close button. */}
           <h2 className="text-[22px] leading-tight font-semibold tracking-tight">
             Preview
@@ -61,7 +61,7 @@ export function PreviewDialog({
           )}
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
           {total === 0 ? (
             <p className="text-muted-foreground text-sm">
               Add a question to preview it here.
@@ -119,7 +119,7 @@ export function PreviewDialog({
         </div>
 
         {total > 0 && !submitted && (
-          <div className="flex items-center justify-between border-t px-6 py-4">
+          <div className="flex items-center justify-between border-t px-4 py-4 sm:px-6">
             <button
               type="button"
               disabled={index === 0}

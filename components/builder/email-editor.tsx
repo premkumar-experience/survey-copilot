@@ -69,7 +69,7 @@ export function EmailEditor({ generating = false }: { generating?: boolean }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[980px] flex-col gap-5 px-6 py-8">
+    <div className="mx-auto flex w-full max-w-[980px] flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-[22px] leading-tight font-semibold tracking-tight">
@@ -172,7 +172,7 @@ export function EmailEditor({ generating = false }: { generating?: boolean }) {
               />
             </Field>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Button label">
                 <Input
                   value={email.ctaLabel}

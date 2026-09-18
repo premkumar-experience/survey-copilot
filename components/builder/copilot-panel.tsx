@@ -73,6 +73,12 @@ export interface CopilotPanelHandle {
 interface CopilotPanelProps {
   pendingObjective: string | null
   /**
+   * Dismisses the panel where it is an overlay (below xl). Absent when the
+   * panel is docked, which is why the close control is conditional rather
+   * than breakpoint-hidden.
+   */
+  onClose?: () => void
+  /**
    * Reports whether an AI operation is running, so the workspace can pause
    * autosave rather than persisting half-mutated intermediate states.
    */
@@ -80,7 +86,7 @@ interface CopilotPanelProps {
 }
 
 export const CopilotPanel = forwardRef<CopilotPanelHandle, CopilotPanelProps>(
-  function CopilotPanel({ pendingObjective, onBusyChange }, ref) {
+  function CopilotPanel({ pendingObjective, onClose, onBusyChange }, ref) {
     const {
       survey,
       review,
@@ -263,7 +269,7 @@ export const CopilotPanel = forwardRef<CopilotPanelHandle, CopilotPanelProps>(
     }, [busy, onBusyChange])
 
     return (
-      <aside className="panel flex h-full w-[340px] shrink-0 flex-col border-l">
+      <aside className="panel flex h-full w-full shrink-0 flex-col border-l sm:w-[340px]">
         <div className="flex items-center justify-between border-b px-4 py-3.5">
           <span className="text-brand-bright flex items-center gap-1.5 text-sm font-semibold">
             <Sparkles className="size-4" />
@@ -281,6 +287,17 @@ export const CopilotPanel = forwardRef<CopilotPanelHandle, CopilotPanelProps>(
             >
               <Undo2 className="size-3" />
               Undo AI Changes
+            </button>
+          )}
+
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close Copilot"
+              className="text-muted-foreground hover:text-foreground -mr-1 ml-2 xl:hidden"
+            >
+              <X className="size-4" />
             </button>
           )}
         </div>

@@ -9,7 +9,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#faf9fc'
+  themeColor: '#faf9fc',
+  // Explicit rather than relying on Next's default: without width=device-width
+  // a phone renders at ~980px and every breakpoint below resolves as desktop.
+  width: 'device-width',
+  initialScale: 1
 }
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {

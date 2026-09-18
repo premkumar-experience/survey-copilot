@@ -36,8 +36,10 @@ export function BuilderToolsPanel({
 }) {
   const { survey, review, dispatch, select } = useSurvey()
 
+  // Hidden below lg: the canvas needs the width more than the palette does,
+  // and every action here is also in the command palette.
   return (
-    <aside className="panel flex h-full w-[220px] shrink-0 flex-col gap-5 overflow-y-auto border-r px-3.5 py-4">
+    <aside className="panel hidden h-full w-[220px] shrink-0 flex-col gap-5 overflow-y-auto border-r px-3.5 py-4 lg:flex">
       <div>
         <p className="text-muted-foreground/70 mb-2 px-1.5 text-[11px] font-semibold tracking-wide uppercase">
           Build

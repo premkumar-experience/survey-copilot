@@ -28,7 +28,7 @@ export function EmptyBuilder({
   /* Sits near the top of the canvas rather than vertically centred, with
      enough padding to clear the step nav in the header. */
   return (
-    <div className="flex flex-col items-center gap-5 px-6 pt-20 pb-10 text-center">
+    <div className="flex flex-col items-center gap-5 px-4 pt-10 pb-10 text-center sm:px-6 sm:pt-20">
       <div className="border-brand/25 bg-accent flex size-16 items-center justify-center rounded-2xl border">
         <FilePlus2 className="text-brand size-7" />
       </div>

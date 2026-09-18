@@ -10,6 +10,7 @@ import { FilePlus2, FolderOpen } from 'lucide-react'
 import Link from 'next/link'
 
 import { AppSidebar } from '@/components/app-sidebar'
+import { MobileNav } from '@/components/mobile-nav'
 import { SurveyList } from '@/components/survey-list'
 import { Button } from '@/components/ui/button'
 import { listSurveys } from '@/lib/db/surveys'
@@ -26,8 +27,12 @@ export default async function SurveysPage() {
       <AppSidebar active="My Surveys" />
 
       <div className="flex min-w-0 flex-1 flex-col overflow-y-auto">
-        <div className="mx-auto w-full max-w-[860px] px-8 py-10">
-          <header className="mb-6 flex items-end justify-between gap-4">
+        <div className="mx-auto w-full max-w-[860px] px-4 py-6 sm:px-8 sm:py-10">
+          <div className="mb-4 lg:hidden">
+            <MobileNav active="My Surveys" />
+          </div>
+
+          <header className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <h1 className="text-[26px] leading-tight font-semibold tracking-tight">
                 My Surveys

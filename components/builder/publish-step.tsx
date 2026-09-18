@@ -61,7 +61,7 @@ export function PublishStep({
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[720px] flex-col gap-5 px-6 py-8">
+    <div className="mx-auto flex w-full max-w-[720px] flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
       <header>
         <h1 className="text-[22px] leading-tight font-semibold tracking-tight">
           {published ? 'Survey published' : 'Ready to publish'}

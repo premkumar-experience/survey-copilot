@@ -16,6 +16,7 @@ import Link from 'next/link'
 
 import { AppSidebar } from '@/components/app-sidebar'
 import { GenerateForm } from '@/components/generate-form'
+import { MobileNav } from '@/components/mobile-nav'
 import { SurveyList } from '@/components/survey-list'
 import { Input } from '@/components/ui/input'
 import { listSurveys } from '@/lib/db/surveys'
@@ -61,37 +62,50 @@ export default async function Home() {
       <AppSidebar />
 
       <div className="flex min-w-0 flex-1 flex-col overflow-y-auto">
-        <header className="flex items-center justify-end gap-3 px-8 py-5">
-          <div className="w-full max-w-[280px]">
+        <header className="flex items-center gap-3 px-4 py-4 sm:px-8 sm:py-5">
+          <MobileNav />
+
+          {/* Search takes the free space on phones, where there is no
+              sidebar beside it to balance against. */}
+          <div className="w-full max-w-[280px] lg:ml-auto">
             <Input
               placeholder="Search surveys..."
               className="bg-card h-9 text-[13px] shadow-xs"
             />
           </div>
-          <div className="border-border bg-card flex items-center gap-2 rounded-full border py-1 pr-3 pl-1 shadow-xs">
+
+          {/* The name is the first thing to go when width is scarce; the
+              avatar still identifies the account. */}
+          <div className="border-border bg-card flex shrink-0 items-center gap-2 rounded-full border py-1 pr-1 pl-1 shadow-xs sm:pr-3">
             <span className="from-brand to-brand-bright flex size-7 items-center justify-center rounded-full bg-gradient-to-br text-[11px] font-semibold text-white">
               PA
             </span>
-            <span className="text-[13px] font-medium">Premkumar A.</span>
+            <span className="hidden text-[13px] font-medium sm:inline">
+              Premkumar A.
+            </span>
           </div>
         </header>
 
-        <div className="relative flex flex-1 gap-8 px-8 pb-10">
+        <div className="relative flex flex-1 gap-8 px-4 pb-10 sm:px-8">
           <div className="hero-aura pointer-events-none absolute inset-x-0 -top-24 h-[420px]" />
 
-          <main className="relative flex min-w-0 flex-1 flex-col items-center justify-center pb-16">
+          {/* Centred only once the aside carries the templates; below xl the
+              stacked content needs to flow from the top instead. */}
+          <main className="relative flex min-w-0 flex-1 flex-col items-center pt-6 pb-16 xl:justify-center xl:pt-0">
             <span className="border-brand/30 bg-brand/10 text-brand-bright inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11.5px] font-medium">
               <Sparkles className="size-3" />
               AI Powered Survey Creation
             </span>
 
-            <h1 className="mt-6 max-w-[620px] text-center text-[42px] leading-[1.12] font-bold tracking-tight">
+            <h1 className="mt-6 max-w-[620px] text-center text-[30px] leading-[1.15] font-bold tracking-tight sm:text-[42px] sm:leading-[1.12]">
               Create better surveys,
-              <br />
+              {/* The break is desktop-only: forced at phone width it leaves a
+                  short orphan line. */}
+              <br className="hidden sm:inline" />{' '}
               <span className="text-brand-gradient">10x faster</span> with AI
             </h1>
 
-            <p className="text-muted-foreground mt-4 max-w-[520px] text-center text-[15px] leading-relaxed">
+            <p className="text-muted-foreground mt-4 max-w-[520px] text-center text-sm leading-relaxed sm:text-[15px]">
               Describe what you want to learn, and Survey Copilot will build the
               survey for you.
             </p>
@@ -100,11 +114,37 @@ export default async function Home() {
               <GenerateForm />
             </div>
 
-            <p className="text-muted-foreground/80 mt-6 flex items-center gap-1.5 text-xs">
-              <Sparkles className="size-3" />
+            <p className="text-muted-foreground/80 mt-6 flex items-center gap-1.5 text-center text-xs">
+              <Sparkles className="size-3 shrink-0" />
               Generates a full survey, reviews it for quality, and fixes what it
               finds
             </p>
+
+            {/* Below xl the aside is hidden, which would take recent surveys
+                and templates with it — the two things that start the next
+                survey. They reappear here, stacked under the hero. */}
+            <div className="mt-12 flex w-full max-w-[640px] flex-col gap-3 xl:hidden">
+              {recent.length > 0 && (
+                <>
+                  <div className="flex items-baseline justify-between">
+                    <h2 className="text-[15px] font-semibold">
+                      Recent surveys
+                    </h2>
+                    <Link
+                      href="/surveys"
+                      className="text-brand text-xs hover:underline"
+                    >
+                      View all
+                    </Link>
+                  </div>
+                  <SurveyList surveys={recent} />
+
+                  <div className="bg-border/70 my-2 h-px" />
+                </>
+              )}
+
+              <TemplateCards />
+            </div>
           </main>
 
           {/* Recent surveys sit above the templates rather than replacing

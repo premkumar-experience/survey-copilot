@@ -29,11 +29,30 @@ export function CopilotMark({ className }: { className?: string }) {
   )
 }
 
+/**
+ * The mark and the name, locked to one another.
+ *
+ * The mark, gap and corner radius are all `em`, so they scale with whatever
+ * font size a caller sets and the proportions never drift. The ratios are
+ * the dashboard sidebar's original pixel values over its 17px text
+ * (32/17, 10/17, 8/17), so that rendering is unchanged — it was the
+ * reference. Previously these were fixed (`size-8`, `gap-2.5`), so the
+ * builder topbar's smaller text left an oversized mark and a tight gap.
+ *
+ * `leading-none` keeps the text box tight to the glyphs; with the default
+ * line-height the baseline sits low and the mark reads as misaligned even
+ * when it is perfectly centred.
+ */
 export function Wordmark({ className }: { className?: string }) {
   return (
-    <span className={cn('flex items-center gap-2.5', className)}>
-      <CopilotMark className="size-8" />
-      <span className="text-[17px] font-semibold tracking-tight">
+    <span
+      className={cn(
+        'flex items-center gap-[0.59em] text-[17px] font-semibold tracking-tight',
+        className
+      )}
+    >
+      <CopilotMark className="size-[1.88em] shrink-0 rounded-[0.47em]" />
+      <span className="leading-none whitespace-nowrap">
         Survey <span className="text-brand-bright">Copilot</span>
       </span>
     </span>

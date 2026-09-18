@@ -27,8 +27,9 @@ export function AppSidebar({
 }: {
   active?: string
 } = {}) {
+  // Hidden below lg, where MobileNav shows the same items in a drawer.
   return (
-    <aside className="panel flex h-dvh w-[248px] shrink-0 flex-col gap-6 overflow-y-auto border-r px-4 py-5">
+    <aside className="panel hidden h-dvh w-[248px] shrink-0 flex-col gap-6 overflow-y-auto border-r px-4 py-5 lg:flex">
       <div className="flex items-center justify-between">
         <Wordmark />
       </div>
